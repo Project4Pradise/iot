@@ -1,4 +1,4 @@
-package com.ruoyi.common.utils.mqtt;
+package com.ruoyi.utils.mqtt;
 
 import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,4 +121,3 @@ public class MqttConfig {
         return mqttPushClient;
     }
 }
-

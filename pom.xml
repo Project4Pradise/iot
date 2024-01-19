@@ -169,6 +169,19 @@
                 <artifactId>ruoyi-common</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
+            <!-- 风障管理-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-barrier</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+            <!--mqtt依赖-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-mqtt</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>
@@ -180,6 +193,10 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
+        <module>ruoyi-barrier</module>
+        <module>ruoyi-mqtt</module>
+
+
     </modules>
     <packaging>pom</packaging>
 

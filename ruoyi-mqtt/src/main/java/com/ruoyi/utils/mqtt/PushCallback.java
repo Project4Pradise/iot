@@ -1,6 +1,8 @@
-package com.ruoyi.common.utils.mqtt;
+package com.ruoyi.utils.mqtt;
 
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -9,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.ruoyi.utils.mqtt.control.BarrierControl;
 
 @Component
 public class PushCallback implements MqttCallback {
@@ -16,12 +19,14 @@ public class PushCallback implements MqttCallback {
 
     @Autowired
     private MqttConfig mqttConfig;
-
+    @Autowired
+    private BarrierControl barrierControl;
     private static MqttClient client;
 
     private static String _topic;
     private static String _qos;
     private static String _msg;
+
 
     @Override
     public void connectionLost(Throwable throwable) {
@@ -42,6 +47,10 @@ public class PushCallback implements MqttCallback {
         _topic = topic;
         _qos = mqttMessage.getQos()+"";
         _msg = new String(mqttMessage.getPayload());
+        if(topic.equals("iot/current")){
+            barrierControl.updateCurrent();
+            barrierControl.RaiseBarrierCurrentThreshold();
+        }
     }
 
     @Override
@@ -50,13 +59,12 @@ public class PushCallback implements MqttCallback {
     }
 
     //别的Controller层会调用这个方法来  获取  接收到的硬件数据
-    public String receive() {
+    public JSONObject receive() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("topic", _topic);
         jsonObject.put("qos", _qos);
         jsonObject.put("msg", _msg);
-        return jsonObject.toString();
+        return jsonObject;
     }
 
 }
-

@@ -1,4 +1,4 @@
-package com.ruoyi.common.utils.mqtt;
+package com.ruoyi.utils.mqtt;
 
 import com.ruoyi.common.core.domain.AjaxResult;
 import org.eclipse.paho.client.mqttv3.*;
@@ -108,5 +108,3 @@ public class MqttPushClient {
     }
 
 }
-
-

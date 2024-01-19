@@ -92,7 +92,7 @@ spring:
     password: user01 # 密码
     hostUrl: tcp://127.0.0.1:1883 # tcp://ip:端口
     clientId: mqttx_b45b05d2 # 客户端id
-    defaultTopic: topic,iot-test,iot # 订阅主题
+    defaultTopic: test1/#,iot/# # 订阅主题
     timeout: 100 # 超时时间 （单位：秒）
     keepalive: 60 # 心跳 （单位：秒）
     enabled: true # 是否使用mqtt功能

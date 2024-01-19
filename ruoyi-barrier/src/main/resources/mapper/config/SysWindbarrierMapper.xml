@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.barrier.mapper.SysWindbarrierMapper">
+    
+    <resultMap type="SysWindbarrier" id="SysWindbarrierResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="currentHeight"    column="CurrentHeight"    />
+        <result property="currentCurrent"    column="CurrentCurrent"    />
+        <result property="groupId"    column="GroupId"    />
+        <result property="areaId"    column="AreaId"    />
+        <result property="communicationCabinetId"    column="CommunicationCabinetId"    />
+        <result property="controlCabinetId"    column="ControlCabinetId"    />
+        <result property="workingTrend"    column="WorkingTrend"    />
+        <result property="isWorking"    column="isWorking"    />
+        <result property="isRetrying"    column="isRetrying"    />
+        <result property="raiseBarrierCurrentThreshold"    column="RaiseBarrierCurrentThreshold"    />
+        <result property="fallBarrierCurrentThreshold"    column="FallBarrierCurrentThreshold"    />
+        <result property="raiseBarrierTimeThreshold"    column="RaiseBarrierTimeThreshold"    />
+        <result property="fallBarrierTimeThreshold"    column="FallBarrierTimeThreshold"    />
+        <result property="retryCount"    column="RetryCount"    />
+        <result property="raiseBarrierRetryCurrentThreshold"    column="RaiseBarrierRetryCurrentThreshold"    />
+        <result property="fallBarrierRetryCurrentThreshold"    column="FallBarrierRetryCurrentThreshold"    />
+        <result property="raiseBarrierRetryTimeThreshold"    column="RaiseBarrierRetryTimeThreshold"    />
+        <result property="fallBarrierRetryTimeThreshold"    column="FallBarrierRetryTimeThreshold"    />
+    </resultMap>
+
+    <sql id="selectSysWindbarrierVo">
+        select id, name, CurrentHeight, CurrentCurrent, GroupId, AreaId, CommunicationCabinetId, ControlCabinetId, WorkingTrend, isWorking, isRetrying, RaiseBarrierCurrentThreshold, FallBarrierCurrentThreshold, RaiseBarrierTimeThreshold, FallBarrierTimeThreshold, RetryCount, RaiseBarrierRetryCurrentThreshold, FallBarrierRetryCurrentThreshold, RaiseBarrierRetryTimeThreshold, FallBarrierRetryTimeThreshold from sys_windbarrier
+    </sql>
+
+    <select id="selectSysWindbarrierList" parameterType="SysWindbarrier" resultMap="SysWindbarrierResult">
+        <include refid="selectSysWindbarrierVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="CurrentHeight != null "> and CurrentHeight = #{CurrentHeight}</if>
+            <if test="CurrentCurrent != null "> and CurrentCurrent = #{CurrentCurrent}</if>
+            <if test="GroupId != null "> and GroupId = #{GroupId}</if>
+            <if test="AreaId != null "> and AreaId = #{AreaId}</if>
+            <if test="CommunicationCabinetId != null "> and CommunicationCabinetId = #{CommunicationCabinetId}</if>
+            <if test="ControlCabinetId != null "> and ControlCabinetId = #{ControlCabinetId}</if>
+            <if test="WorkingTrend != null "> and WorkingTrend = #{WorkingTrend}</if>
+            <if test="isWorking != null "> and isWorking = #{isWorking}</if>
+            <if test="isRetrying != null "> and isRetrying = #{isRetrying}</if>
+            <if test="RaiseBarrierCurrentThreshold != null "> and RaiseBarrierCurrentThreshold = #{RaiseBarrierCurrentThreshold}</if>
+            <if test="FallBarrierCurrentThreshold != null "> and FallBarrierCurrentThreshold = #{FallBarrierCurrentThreshold}</if>
+            <if test="RaiseBarrierTimeThreshold != null "> and RaiseBarrierTimeThreshold = #{RaiseBarrierTimeThreshold}</if>
+            <if test="FallBarrierTimeThreshold != null "> and FallBarrierTimeThreshold = #{FallBarrierTimeThreshold}</if>
+            <if test="RetryCount != null "> and RetryCount = #{RetryCount}</if>
+            <if test="RaiseBarrierRetryCurrentThreshold != null "> and RaiseBarrierRetryCurrentThreshold = #{RaiseBarrierRetryCurrentThreshold}</if>
+            <if test="FallBarrierRetryCurrentThreshold != null "> and FallBarrierRetryCurrentThreshold = #{FallBarrierRetryCurrentThreshold}</if>
+            <if test="RaiseBarrierRetryTimeThreshold != null "> and RaiseBarrierRetryTimeThreshold = #{RaiseBarrierRetryTimeThreshold}</if>
+            <if test="FallBarrierRetryTimeThreshold != null "> and FallBarrierRetryTimeThreshold = #{FallBarrierRetryTimeThreshold}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysWindbarrierById" parameterType="Long" resultMap="SysWindbarrierResult">
+        <include refid="selectSysWindbarrierVo"/>
+        where id = #{id}
+    </select>
+
+
+    <insert id="insertSysWindbarrier" parameterType="SysWindbarrier" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_windbarrier
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="CurrentHeight != null">CurrentHeight,</if>
+            <if test="CurrentCurrent != null">CurrentCurrent,</if>
+            <if test="GroupId != null">GroupId,</if>
+            <if test="AreaId != null">AreaId,</if>
+            <if test="CommunicationCabinetId != null">CommunicationCabinetId,</if>
+            <if test="ControlCabinetId != null">ControlCabinetId,</if>
+            <if test="WorkingTrend != null">WorkingTrend,</if>
+            <if test="isWorking != null">isWorking,</if>
+            <if test="isRetrying != null">isRetrying,</if>
+            <if test="RaiseBarrierCurrentThreshold != null">RaiseBarrierCurrentThreshold,</if>
+            <if test="FallBarrierCurrentThreshold != null">FallBarrierCurrentThreshold,</if>
+            <if test="RaiseBarrierTimeThreshold != null">RaiseBarrierTimeThreshold,</if>
+            <if test="FallBarrierTimeThreshold != null">FallBarrierTimeThreshold,</if>
+            <if test="RetryCount != null">RetryCount,</if>
+            <if test="RaiseBarrierRetryCurrentThreshold != null">RaiseBarrierRetryCurrentThreshold,</if>
+            <if test="FallBarrierRetryCurrentThreshold != null">FallBarrierRetryCurrentThreshold,</if>
+            <if test="RaiseBarrierRetryTimeThreshold != null">RaiseBarrierRetryTimeThreshold,</if>
+            <if test="FallBarrierRetryTimeThreshold != null">FallBarrierRetryTimeThreshold,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="CurrentHeight != null">#{CurrentHeight},</if>
+            <if test="CurrentCurrent != null">#{CurrentCurrent},</if>
+            <if test="GroupId != null">#{GroupId},</if>
+            <if test="AreaId != null">#{AreaId},</if>
+            <if test="CommunicationCabinetId != null">#{CommunicationCabinetId},</if>
+            <if test="ControlCabinetId != null">#{ControlCabinetId},</if>
+            <if test="WorkingTrend != null">#{WorkingTrend},</if>
+            <if test="isWorking != null">#{isWorking},</if>
+            <if test="isRetrying != null">#{isRetrying},</if>
+            <if test="RaiseBarrierCurrentThreshold != null">#{RaiseBarrierCurrentThreshold},</if>
+            <if test="FallBarrierCurrentThreshold != null">#{FallBarrierCurrentThreshold},</if>
+            <if test="RaiseBarrierTimeThreshold != null">#{RaiseBarrierTimeThreshold},</if>
+            <if test="FallBarrierTimeThreshold != null">#{FallBarrierTimeThreshold},</if>
+            <if test="RetryCount != null">#{RetryCount},</if>
+            <if test="RaiseBarrierRetryCurrentThreshold != null">#{RaiseBarrierRetryCurrentThreshold},</if>
+            <if test="FallBarrierRetryCurrentThreshold != null">#{FallBarrierRetryCurrentThreshold},</if>
+            <if test="RaiseBarrierRetryTimeThreshold != null">#{RaiseBarrierRetryTimeThreshold},</if>
+            <if test="FallBarrierRetryTimeThreshold != null">#{FallBarrierRetryTimeThreshold},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysWindbarrier" parameterType="SysWindbarrier">
+        update sys_windbarrier
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="CurrentHeight != null">CurrentHeight = #{CurrentHeight},</if>
+            <if test="CurrentCurrent != null">CurrentCurrent = #{CurrentCurrent},</if>
+            <if test="GroupId != null">GroupId = #{GroupId},</if>
+            <if test="AreaId != null">AreaId = #{AreaId},</if>
+            <if test="CommunicationCabinetId != null">CommunicationCabinetId = #{CommunicationCabinetId},</if>
+            <if test="ControlCabinetId != null">ControlCabinetId = #{ControlCabinetId},</if>
+            <if test="WorkingTrend != null">WorkingTrend = #{WorkingTrend},</if>
+            <if test="isWorking != null">isWorking = #{isWorking},</if>
+            <if test="isRetrying != null">isRetrying = #{isRetrying},</if>
+            <if test="RaiseBarrierCurrentThreshold != null">RaiseBarrierCurrentThreshold = #{RaiseBarrierCurrentThreshold},</if>
+            <if test="FallBarrierCurrentThreshold != null">FallBarrierCurrentThreshold = #{FallBarrierCurrentThreshold},</if>
+            <if test="RaiseBarrierTimeThreshold != null">RaiseBarrierTimeThreshold = #{RaiseBarrierTimeThreshold},</if>
+            <if test="FallBarrierTimeThreshold != null">FallBarrierTimeThreshold = #{FallBarrierTimeThreshold},</if>
+            <if test="RetryCount != null">RetryCount = #{RetryCount},</if>
+            <if test="RaiseBarrierRetryCurrentThreshold != null">RaiseBarrierRetryCurrentThreshold = #{RaiseBarrierRetryCurrentThreshold},</if>
+            <if test="FallBarrierRetryCurrentThreshold != null">FallBarrierRetryCurrentThreshold = #{FallBarrierRetryCurrentThreshold},</if>
+            <if test="RaiseBarrierRetryTimeThreshold != null">RaiseBarrierRetryTimeThreshold = #{RaiseBarrierRetryTimeThreshold},</if>
+            <if test="FallBarrierRetryTimeThreshold != null">FallBarrierRetryTimeThreshold = #{FallBarrierRetryTimeThreshold},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateCurrentById">
+        update sys_windbarrier
+        set CurrentCurrent = #{current}
+        WHERE id = #{id}
+    </update>
+
+
+    <update id="updateIsWorkingById">
+    update sys_windbarrier
+    set isWorking = #{isWorking}
+    WHERE id = #{id}
+    </update>
+
+    <update id="updateIsRetryingById">
+        update sys_windbarrier
+        set isRetrying = #{isRetrying}
+        WHERE id = #{id}
+    </update>
+
+
+    <delete id="deleteSysWindbarrierById" parameterType="Long">
+        delete from sys_windbarrier where id = #{id}
+    </delete>
+
+    <delete id="deleteSysWindbarrierByIds" parameterType="String">
+        delete from sys_windbarrier where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
