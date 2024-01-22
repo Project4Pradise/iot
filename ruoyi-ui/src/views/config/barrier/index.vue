@@ -18,12 +18,14 @@
         />
       </el-form-item>
       <el-form-item label="区域Id" prop="AreaId">
-        <el-input
-          v-model="queryParams.AreaId"
-          placeholder="请输入区域Id"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-select v-model="queryParams.AreaId" placeholder="请选择">
+          <el-option
+            v-for="item in areaOptionsup"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="通信柜id" prop="CommunicationCabinetId">
         <el-input
@@ -120,7 +122,7 @@
       <el-table-column label="名称" align="center" prop="name" />
       <el-table-column label="运行高度" align="center" prop="currentHeight" />
       <el-table-column label="分组id" align="center" prop="groupId" />
-      <el-table-column label="区域Id" align="center" prop="areaId" />
+      <el-table-column label="区域Id" align="center" prop="areaId"  />
       <el-table-column label="通信柜id" align="center" prop="communicationCabinetId" />
       <el-table-column label="控制柜id" align="center" prop="controlCabinetId" />
       <el-table-column label="是否工作"  >
@@ -182,7 +184,7 @@
           <el-input v-model="form.groupId" placeholder="请输入分组id" />
         </el-form-item>
         <el-form-item label="区域Id" prop="AreaId">
-          <el-input v-model="form.areaId" placeholder="请输入区域Id" />
+          <el-input v-model="form.groupId" placeholder="请输入区域id" />
         </el-form-item>
         <el-form-item label="通信柜id" prop="CommunicationCabinetId">
           <el-input v-model="form.communicationCabinetId" placeholder="请输入通信柜id" />
@@ -227,12 +229,14 @@
 </template>
 
 <script>
-import { listBarrier, getBarrier, delBarrier, addBarrier, updateBarrier,sendmqtt } from "@/api/config/barrier";
+import { listBarrier, getBarrier, delBarrier, addBarrier, updateBarrier,sendmqtt,getgroups } from "@/api/config/barrier";
+
 
 export default {
   name: "Barrier",
   data() {
     return {
+
 
       stateOptions:[
         {
@@ -243,7 +247,22 @@ export default {
           label: '是'
         }
       ],
-
+      areaOptionsup:[
+        {
+          value: '1',
+          label: '1'
+        }, {
+          value: '2',
+          label: '2'
+        }, {
+          value: '3',
+          label: '3'
+        }, {
+          value: '4',
+          label: '4'
+        }
+      ],
+      groups:[],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -348,6 +367,7 @@ export default {
         this.total = response.total;
         this.loading = false;
       });
+
     },
     // 取消按钮
     cancel() {

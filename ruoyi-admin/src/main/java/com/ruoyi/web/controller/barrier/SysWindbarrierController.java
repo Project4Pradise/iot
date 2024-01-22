@@ -53,6 +53,7 @@ public class SysWindbarrierController extends BaseController
         util.exportExcel(response, list, "风障参数数据");
     }
 
+
     /**
      * 获取风障参数详细信息
      */

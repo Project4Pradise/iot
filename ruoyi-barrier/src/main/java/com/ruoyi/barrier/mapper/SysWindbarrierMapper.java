@@ -67,4 +67,5 @@ public interface SysWindbarrierMapper
      * @return 结果
      */
     public int deleteSysWindbarrierByIds(Long[] ids);
+    public List<SysWindbarrier> selelctBarrierBygroupId(Long id);
 }

@@ -153,7 +153,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE id = #{id}
     </update>
 
-
+<select id="selelctBarrierBygroupId" resultMap="SysWindbarrierResult">
+    select sys_windbarrier.* from sys_windbarrier
+    left join sys_group on sys_group.id=sys_windbarrier.groupId
+    WHERE sys_windbarrier.groupId=#{id}
+</select>
     <delete id="deleteSysWindbarrierById" parameterType="Long">
         delete from sys_windbarrier where id = #{id}
     </delete>

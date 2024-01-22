@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.barrier.mapper.SysGroupMapper">
+    
+    <resultMap type="SysGroup" id="SysGroupResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="enable"    column="enable"    />
+    </resultMap>
+
+    <sql id="selectSysGroupVo">
+        select id, name, enable from sys_group
+    </sql>
+
+    <select id="selectSysGroupList" parameterType="SysGroup" resultMap="SysGroupResult">
+        <include refid="selectSysGroupVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="enable != null "> and enable = #{enable}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysGroupById" parameterType="Long" resultMap="SysGroupResult">
+        <include refid="selectSysGroupVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysGroup" parameterType="SysGroup" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="enable != null">enable,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="enable != null">#{enable},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysGroup" parameterType="SysGroup">
+        update sys_group
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="enable != null">enable = #{enable},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysGroupById" parameterType="Long">
+        delete from sys_group where id = #{id}
+    </delete>
+
+    <delete id="deleteSysGroupByIds" parameterType="String">
+        delete from sys_group where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

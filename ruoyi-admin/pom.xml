@@ -65,10 +65,12 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-barrier</artifactId>
         </dependency>
+        <!--mqtt-->
         <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-mqtt</artifactId>
         </dependency>
+
 
 
     </dependencies>
