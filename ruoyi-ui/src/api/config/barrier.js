@@ -60,16 +60,30 @@ export function delBarrier(id) {
     }
   })
 }*/
-export function sendmqtt(qos, retained, topic, pushMessage) {
-  const url = `/mqtt/publishTopic?qos=${qos}&retained=${retained}&topic=${topic}&pushMessage=${pushMessage}`;
+export function sendmqtt(mqttMessage, topic) {
+  return request({
+    url: '/mqtt/publishTopic',
+    method: 'post',
+    params: {
+      topic: topic
+    },
+    data: mqttMessage
+  });
+}
+export function selectAreaList(){
+  const url='/config/area/listAll';
 
   return request({
-    url: url,
-    method: 'get',
-  });
-
-
+    url:url,
+    method:'get',
+  })
 
 }
 
-
+export function updateWorkingTrendsByIds(ids,WorkingTrend){
+  const url = `/config/barrier//workingTrend?workingTrend=${WorkingTrend}&ids=${ids.join(',')}`;
+  return request({
+    url:url,
+    method:'put'
+  })
+}

@@ -56,6 +56,7 @@ public class CacheController
         result.put("info", info);
         result.put("dbSize", dbSize);
 
+
         List<Map<String, String>> pieList = new ArrayList<>();
         commandStats.stringPropertyNames().forEach(key -> {
             Map<String, String> data = new HashMap<>(2);

@@ -30,6 +30,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectSysAreaVo"/>
         where id = #{id}
     </select>
+    <select id="selectAll" resultMap="SysAreaResult">
+        select * from sys_area
+    </select>
         
     <insert id="insertSysArea" parameterType="SysArea" useGeneratedKeys="true" keyProperty="id">
         insert into sys_area
@@ -68,4 +71,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectAreaList" resultMap="SysAreaResult">
+        select *
+        from sys_area;
+    </select>
 </mapper>

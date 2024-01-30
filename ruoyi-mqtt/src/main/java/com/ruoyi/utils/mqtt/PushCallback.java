@@ -47,10 +47,11 @@ public class PushCallback implements MqttCallback {
         _topic = topic;
         _qos = mqttMessage.getQos()+"";
         _msg = new String(mqttMessage.getPayload());
-        if(topic.equals("iot/current")){
+
             barrierControl.updateCurrent();
+            barrierControl.FallBarrierCurrentThreshold();
             barrierControl.RaiseBarrierCurrentThreshold();
-        }
+
     }
 
     @Override

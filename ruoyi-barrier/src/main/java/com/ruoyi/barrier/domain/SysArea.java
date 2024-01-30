@@ -32,7 +32,7 @@ public class SysArea extends BaseEntity
 
     /** 是否开启智慧组合 */
     @Excel(name = "是否开启智慧组合")
-    private Integer smartCombination;
+    private boolean smartCombination;
 
     public void setId(Long id) 
     {
@@ -70,12 +70,12 @@ public class SysArea extends BaseEntity
     {
         return togetherWorkingCount;
     }
-    public void setSmartCombination(Integer smartCombination) 
+    public void setSmartCombination(boolean smartCombination)
     {
         this.smartCombination = smartCombination;
     }
 
-    public Integer getSmartCombination() 
+    public boolean getSmartCombination()
     {
         return smartCombination;
     }

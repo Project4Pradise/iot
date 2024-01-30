@@ -90,4 +90,9 @@ public class SysWindbarrierServiceImpl implements ISysWindbarrierService
     {
         return sysWindbarrierMapper.deleteSysWindbarrierById(id);
     }
+
+
+
+    @Override
+    public int updateBarrierWorkingTrendByIds(Long[] ids,int WorkingTrend){return sysWindbarrierMapper.updateBarrierWorkingTrendByIds(ids,WorkingTrend);}
 }

@@ -43,7 +43,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-
       <el-form-item label="是否工作" prop="isWorking">
         <el-select v-model="queryParams.isWorking" placeholder="请选择">
           <el-option
@@ -72,37 +71,36 @@
     </el-form>
 
 
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['config:barrier:add']"
-        >新增</el-button>
-
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['config:barrier:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['config:barrier:remove']"
-        >删除</el-button>
-      </el-col>
+    <el-col :span="1.5">
+      <el-button
+        type="primary"
+        plain
+        icon="el-icon-download"
+        size="mini"
+        @click="handleBarrierUp"
+        v-hasPermi="['config:barrier:edit']"
+      >升障</el-button>
+    </el-col>
+    <el-col :span="1.5">
+      <el-button
+        type="danger"
+        plain
+        icon="el-icon-download"
+        size="mini"
+        @click="handleBarrierDown"
+        v-hasPermi="['config:barrier:edit']"
+      >降障</el-button>
+    </el-col>
+    <el-col :span="1.5">
+      <el-button
+        type="info"
+        plain
+        icon="el-icon-download"
+        size="mini"
+        @click="handleBarrierStop"
+        v-hasPermi="['config:barrier:edit']"
+      >停止</el-button>
+    </el-col>
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -120,21 +118,28 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
       <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="当前电流" align="center" prop="currentCurrent" />
-      <el-table-column label="运行高度" align="center" prop="currentHeight" />
+      <el-table-column label="运 行高度" align="center" prop="currentHeight" />
       <el-table-column label="分组id" align="center" prop="groupId" />
       <el-table-column label="区域Id" align="center" prop="areaId"  />
       <el-table-column label="通信柜id" align="center" prop="communicationCabinetId" />
       <el-table-column label="控制柜id" align="center" prop="controlCabinetId" />
-      <el-table-column label="运行状态" align="center" prop="workingTrend" />
+      <el-table-column prop="workingTrend" label="工作趋势">
+        <template slot-scope="scope">
+          <el-tag type="primary" v-if="scope.row.workingTrend==0">停止</el-tag>
+          <el-tag type="warning" v-if="scope.row.workingTrend==1">上升</el-tag>
+          <el-tag type="success" v-if="scope.row.workingTrend==2">下降</el-tag>
+          <el-tag type="info" v-if="scope.row.workingTrend==3">上升到位</el-tag>
+          <el-tag type="success" v-if="scope.row.workingTrend==4">下降到位</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="是否工作"  >
         <template slot-scope="scope" >
-          <el-switch v-model="scope.row.isWorking" active-color="#13ce66" inactive-color="#ccc"  @change="changeWorkingEnable(scope.row)"  ></el-switch>
+          <el-switch v-model="scope.row.isWorking" active-color="#13ce66" inactive-color="#ccc"   :disabled="true" ></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="是否重试"  >
         <template slot-scope="scope" >
-          <el-switch v-model="scope.row.isRetrying" active-color="#13ce66" inactive-color="#ccc" @change="changeRetryEnable(scope.row)"  ></el-switch>
+          <el-switch v-model="scope.row.isRetrying" active-color="#13ce66" inactive-color="#ccc"  :disabled="true" ></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="升障电流阈值" align="center" prop="raiseBarrierCurrentThreshold" />
@@ -148,24 +153,7 @@
 
       <el-table-column label="重试升障时间阈值" align="center" prop="raiseBarrierRetryTimeThreshold" />
       <el-table-column label="重试降障时间阈值" align="center" prop="fallBarrierRetryTimeThreshold" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['config:barrier:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['config:barrier:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column>
+
     </el-table>
 
     <pagination
@@ -238,17 +226,26 @@
 </template>
 
 <script>
-import { listBarrier, getBarrier, delBarrier, addBarrier, updateBarrier,sendmqtt } from "@/api/config/barrier";
+import { listBarrier, getBarrier, delBarrier, addBarrier, updateBarrier,updateWorkingTrendsByIds,sendmqtt} from "@/api/config/barrier";
 
 
 export default {
-  name: "Barrier",
+  name: "remote",
   data() {
     return {
       areaName:undefined,
       areaOPtions:undefined,
 
-
+      logicBarrier:{},
+      sendmsg:{
+        id:null,
+        workingTrend:null
+      },
+      mqttMsg:{
+        qos:null,
+        retained:null,
+        payload:null
+      },
       stateOptions:[
         {
           value: 'false',
@@ -273,16 +270,6 @@ export default {
           label: '4'
         }
       ],
-      sendmsg:{
-        id:null,
-        working:null,
-        retrying:null
-      },
-      mqttMsg:{
-        qos:null,
-        retained:null,
-        payload:null
-      },
       groups:[],
       // 遮罩层
       loading: true,
@@ -312,12 +299,11 @@ export default {
         pageSize: 10,
         name: null,
         CurrentHeight: null,
-        CurrentCurrent: null,
         GroupId: null,
         AreaId: null,
         CommunicationCabinetId: null,
         ControlCabinetId: null,
-        WorkingTrend: null,
+        WorkingTrends:null,
         isWorking: null,
         isRetrying: null,
         RaiseBarrierCurrentThreshold: null,
@@ -392,9 +378,7 @@ export default {
 
   },
   methods: {
-    handleNodeClick(){
 
-    },
     filterNode(value, data) {
       if (!value) return true;
       return data.label.indexOf(value) !== -1;
@@ -422,12 +406,10 @@ export default {
         id: null,
         name: null,
         CurrentHeight: null,
-        CurrentCurrent: null,
         GroupId: null,
         AreaId: null,
         CommunicationCabinetId: null,
         ControlCabinetId: null,
-        WorkingTrend: null,
         isWorking: null,
         isRetrying: null,
         RaiseBarrierCurrentThreshold: null,
@@ -476,38 +458,6 @@ export default {
     },
 
 
-    changeWorkingEnable(row){
-
-      updateBarrier(row).then(response => {
-        this.$modal.msgSuccess("修改成功");
-        this.sendmsg.retrying=row.isRetrying;
-        this.sendmsg.working=row.isWorking;
-        this.sendmsg.id=row.id;
-        const jsonStr=JSON.stringify(this.sendmsg);
-        const base64=btoa(jsonStr);
-        this.mqttMsg.qos=1;
-        this.mqttMsg.retained=false;
-        this.mqttMsg.payload=base64;
-        sendmqtt(this.mqttMsg,"iot/state")
-        this.getList();
-      });
-    },
-    changeRetryEnable(row){
-      updateBarrier(row).then(response => {
-        this.$modal.msgSuccess("修改成功");
-        this.sendmsg.retrying=row.isRetrying;
-        this.sendmsg.working=row.isWorking;
-        this.sendmsg.id=row.id;
-        const jsonStr=JSON.stringify(this.sendmsg);
-        const base64=btoa(jsonStr);
-        this.mqttMsg.qos=1;
-        this.mqttMsg.retained=false;
-        this.mqttMsg.payload=base64;
-        sendmqtt(this.mqttMsg,"iot/state")
-
-        this.getList();
-      });
-    },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
@@ -537,6 +487,120 @@ export default {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
+    },
+    //运动趋势批量修改
+    handleBarrierUp(row){
+      const ids = row.id || this.ids;
+      const promises = [];
+
+      for (let i = 0; i < ids.length; i++) {
+        promises.push(
+          getBarrier(ids[i]).then(res => {
+            this.logicBarrier = res.data;
+            if (this.logicBarrier.isWorking === false||this.logicBarrier.isRetrying===true) {
+
+              throw new Error("选中的风障有正在重试或正在停止工作，请重新选择或更改风障状态");
+            }
+          })
+        );
+      }
+
+      Promise.all(promises)
+        .then(() => updateWorkingTrendsByIds(ids, 1))
+        .then(() => {
+          this.$modal.msgSuccess("升障成功");
+          for (let i = 0; i < ids.length; i++) {
+            this.sendmsg.id=ids[i];
+            this.sendmsg.workingTrend=1;
+            const jsonStr=JSON.stringify(this.sendmsg);
+            const base64=btoa(jsonStr);
+            this.mqttMsg.qos=1;
+            this.mqttMsg.retained=false;
+            this.mqttMsg.payload=base64;
+            sendmqtt(this.mqttMsg,"iot/workingState");
+
+          }
+          this.getList();
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          this.$modal.msgError("升障失败：" + error.message);
+        });
+    },
+
+    handleBarrierDown(row) {
+      const ids = row.id || this.ids;
+      const promises = [];
+      for (let i = 0; i < ids.length; i++) {
+        promises.push(
+          getBarrier(ids[i]).then(res => {
+            this.logicBarrier = res.data;
+            if (this.logicBarrier.isWorking === false||this.logicBarrier.isRetrying===true) {
+
+              throw new Error("选中的风障有正在重试或正在停止工作，请重新选择或更改风障状态");
+            }
+          })
+        );
+      }
+
+      Promise.all(promises)
+        .then(() => updateWorkingTrendsByIds(ids, 2))
+        .then(() => {
+          this.$modal.msgSuccess("降障成功");
+          for (let i = 0; i < ids.length; i++) {
+            this.sendmsg.id=ids[i];
+            this.sendmsg.workingTrend=2;
+            const jsonStr=JSON.stringify(this.sendmsg);
+            const base64=btoa(jsonStr);
+            this.mqttMsg.qos=1;
+            this.mqttMsg.retained=false;
+            this.mqttMsg.payload=base64;
+            sendmqtt(this.mqttMsg,"iot/workingState");
+
+          }
+          this.getList();
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          this.$modal.msgError("降障失败：" + error.message);
+        });
+    },
+    handleBarrierStop(row){
+      const ids = row.id || this.ids;
+      const promises = [];
+      for (let i = 0; i < ids.length; i++) {
+        promises.push(
+          getBarrier(ids[i]).then(res => {
+            this.logicBarrier = res.data;
+            if (this.logicBarrier.isWorking === false||this.logicBarrier.isRetrying===true) {
+
+              throw new Error("选中的风障有正在重试或正在停止工作，请重新选择或更改风障状态");
+            }
+          })
+        );
+      }
+
+      Promise.all(promises)
+        .then(() => updateWorkingTrendsByIds(ids, 0))
+        .then(() => {
+          this.$modal.msgSuccess("停止成功");
+          for (let i = 0; i < ids.length; i++) {
+            this.sendmsg.id=ids[i];
+            this.sendmsg.workingTrend=0;
+            const jsonStr=JSON.stringify(this.sendmsg);
+            const base64=btoa(jsonStr);
+            this.mqttMsg.qos=1;
+            this.mqttMsg.retained=false;
+            this.mqttMsg.payload=base64;
+            sendmqtt(this.mqttMsg,"iot/workingState");
+
+          }
+          this.getList();
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          this.$modal.msgError("停止失败：" + error.message);
+        });
     },
     /** 导出按钮操作 */
     handleExport() {

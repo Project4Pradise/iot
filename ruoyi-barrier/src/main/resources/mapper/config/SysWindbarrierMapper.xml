@@ -33,7 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectSysWindbarrierList" parameterType="SysWindbarrier" resultMap="SysWindbarrierResult">
         <include refid="selectSysWindbarrierVo"/>
-        <where>  
+        <where>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="CurrentHeight != null "> and CurrentHeight = #{CurrentHeight}</if>
             <if test="CurrentCurrent != null "> and CurrentCurrent = #{CurrentCurrent}</if>
@@ -41,7 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="AreaId != null "> and AreaId = #{AreaId}</if>
             <if test="CommunicationCabinetId != null "> and CommunicationCabinetId = #{CommunicationCabinetId}</if>
             <if test="ControlCabinetId != null "> and ControlCabinetId = #{ControlCabinetId}</if>
-            <if test="WorkingTrend != null "> and WorkingTrend = #{WorkingTrend}</if>
+           <!-- <if test="WorkingTrend != null "> and WorkingTrend = #{WorkingTrend}</if>-->
             <if test="isWorking != null "> and isWorking = #{isWorking}</if>
             <if test="isRetrying != null "> and isRetrying = #{isRetrying}</if>
             <if test="RaiseBarrierCurrentThreshold != null "> and RaiseBarrierCurrentThreshold = #{RaiseBarrierCurrentThreshold}</if>
@@ -168,4 +168,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+    <update id="updateBarrierWorkingTrendByIds">
+        update sys_windbarrier
+        set WorkingTrend = #{WorkingTrend}
+        WHERE id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 </mapper>

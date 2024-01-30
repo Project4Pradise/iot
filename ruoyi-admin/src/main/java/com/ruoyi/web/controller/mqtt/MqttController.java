@@ -1,13 +1,14 @@
 package com.ruoyi.web.controller.mqtt;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.common.core.domain.AjaxResult;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.integration.mqtt.support.MqttUtils;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.utils.mqtt.PushCallback;
 import com.ruoyi.utils.mqtt.MqttPushClient;
 @RestController
@@ -19,10 +20,14 @@ public class MqttController {
     @Autowired
     private PushCallback pushCallback;
 
-    @GetMapping(value = "/publishTopic")
+    @PostMapping(value = "/publishTopic")
     @ApiOperation("mqtt发布")
-    public AjaxResult publishTopic(Integer qos, boolean retained, String topic, String pushMessage){
+    public AjaxResult publishTopic(@RequestBody MqttMessage mqttMessage,@RequestParam String topic){
         //System.out.println("Received qos: " + qos);  // 添加调试语句
+        int qos=mqttMessage.getQos();
+        boolean retained=mqttMessage.isRetained();
+        String pushMessage=mqttMessage.toString();
+
         mqttPushClient.publish(qos,retained,topic,pushMessage);
         return AjaxResult.success();
     }

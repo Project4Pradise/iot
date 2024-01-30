@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.barrier.mapper.SysWindbarrierMapper;
+import io.swagger.annotations.Api;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/system/group")
+@Api("分组接口")
 public class SysGroupController extends BaseController
 {
     @Autowired

@@ -2,6 +2,10 @@ package com.ruoyi.web.controller.barrier;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.barrier.mapper.SysAreaMapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,16 +33,21 @@ import com.ruoyi.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/config/area")
+@Api("区域接口")
 public class SysAreaController extends BaseController
 {
     @Autowired
     private ISysAreaService sysAreaService;
+
+    @Autowired
+    private SysAreaMapper areaMapper;
 
     /**
      * 查询区域列表
      */
     @PreAuthorize("@ss.hasPermi('config:area:list')")
     @GetMapping("/list")
+    @ApiOperation("查询")
     public TableDataInfo list(SysArea sysArea)
     {
         startPage();
@@ -101,4 +110,14 @@ public class SysAreaController extends BaseController
     {
         return toAjax(sysAreaService.deleteSysAreaByIds(ids));
     }
+    @ApiOperation("查询所有区域")
+    @PreAuthorize("@ss.hasPermi('config:area:list')")
+    @GetMapping("/listAll")
+    public AjaxResult listAll()
+    {
+
+        return  success(areaMapper.selectAreaList());
+    }
+
+
 }

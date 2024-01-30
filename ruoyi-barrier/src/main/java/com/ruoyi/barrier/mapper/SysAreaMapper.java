@@ -1,7 +1,9 @@
 package com.ruoyi.barrier.mapper;
 
+import java.awt.geom.Area;
 import java.util.List;
 import com.ruoyi.barrier.domain.SysArea;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 区域Mapper接口
@@ -9,6 +11,7 @@ import com.ruoyi.barrier.domain.SysArea;
  * @author ruoyi
  * @date 2024-01-22
  */
+@Mapper
 public interface SysAreaMapper 
 {
     /**
@@ -58,4 +61,6 @@ public interface SysAreaMapper
      * @return 结果
      */
     public int deleteSysAreaByIds(Long[] ids);
+
+    public List<SysArea> selectAreaList();
 }

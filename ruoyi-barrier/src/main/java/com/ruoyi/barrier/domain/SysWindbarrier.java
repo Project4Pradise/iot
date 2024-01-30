@@ -48,7 +48,7 @@ public class SysWindbarrier extends BaseEntity
     @Excel(name = "是否工作", readConverterExp = "1=工作，0=停运")
     private Boolean isWorking;
     /** 是否工作（工作为1，停运为0） */
-    @Excel(name = "工作趋势", readConverterExp = "1=上升，2=下降，0=停运")
+    @Excel(name = "工作趋势", readConverterExp = "1=上升，2=下降，0=停运，3=上升到位，4=下降到位")
     private int WorkingTrend;
 
     /** 是否在重试（0为不在重试，1为在重试） */

@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.barrier;
 
 import com.ruoyi.barrier.domain.SysWindbarrier;
+import com.ruoyi.barrier.mapper.SysWindbarrierMapper;
 import com.ruoyi.barrier.service.ISysWindbarrierService;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
@@ -8,6 +9,9 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,16 +27,20 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/config/barrier")
+@Api("风障接口")
 public class SysWindbarrierController extends BaseController
 {
     @Autowired
     private ISysWindbarrierService sysWindbarrierService;
+    @Autowired
+    private SysWindbarrierMapper sysWindbarrierMapper;
 
     /**
      * 查询风障参数列表
      */
     @PreAuthorize("@ss.hasPermi('config:barrier:list')")
     @GetMapping("/list")
+    @ApiOperation("查询风障参数列表")
     public TableDataInfo list(SysWindbarrier sysWindbarrier)
     {
         startPage();
@@ -96,4 +104,15 @@ public class SysWindbarrierController extends BaseController
     {
         return toAjax(sysWindbarrierService.deleteSysWindbarrierByIds(ids));
     }
+
+
+    @PreAuthorize("@ss.hasPermi('config:barrier:edit')")
+    @Log(title = "风障工作趋势", businessType = BusinessType.UPDATE)
+    @PutMapping("/workingTrend")
+    @ApiOperation("批量修改趋势")
+    public AjaxResult updateWorkingTrend(@RequestParam Long[] ids,@RequestParam int workingTrend)
+    {
+        return success(sysWindbarrierService.updateBarrierWorkingTrendByIds(ids,workingTrend));
+    }
+
 }

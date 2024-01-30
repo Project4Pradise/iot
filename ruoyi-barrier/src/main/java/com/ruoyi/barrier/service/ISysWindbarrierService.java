@@ -59,4 +59,5 @@ public interface ISysWindbarrierService
      */
     public int deleteSysWindbarrierById(Long id);
 
+    int updateBarrierWorkingTrendByIds(Long[] ids,int WorkingTrend);
 }

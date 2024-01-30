@@ -369,7 +369,7 @@ export default {
       // 弹出层标题
       title: "",
       // 部门树选项
-      deptOptions: undefined,
+      deptOptions: [],
       // 是否显示弹出层
       open: false,
       // 部门名称
@@ -479,6 +479,7 @@ export default {
     /** 查询部门下拉树结构 */
     getDeptTree() {
       deptTreeSelect().then(response => {
+        console.log(response.data)
         this.deptOptions = response.data;
       });
     },
