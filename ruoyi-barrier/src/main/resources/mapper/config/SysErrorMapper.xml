@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.barrier.mapper.SysErrorMapper">
+    
+    <resultMap type="SysError" id="SysErrorResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+    </resultMap>
+
+    <sql id="selectSysErrorVo">
+        select id, name from sys_error
+    </sql>
+
+    <select id="selectSysErrorList" parameterType="SysError" resultMap="SysErrorResult">
+        <include refid="selectSysErrorVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectSysErrorById" parameterType="Long" resultMap="SysErrorResult">
+        <include refid="selectSysErrorVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysError" parameterType="SysError" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_error
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysError" parameterType="SysError">
+        update sys_error
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysErrorById" parameterType="Long">
+        delete from sys_error where id = #{id}
+    </delete>
+
+    <delete id="deleteSysErrorByIds" parameterType="String">
+        delete from sys_error where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -69,4 +69,6 @@ public interface SysWindbarrierMapper
     public int deleteSysWindbarrierByIds(Long[] ids);
     public List<SysWindbarrier> selelctBarrierBygroupId(Long id);
     public int updateBarrierWorkingTrendByIds( @Param("array") Long[] ids,@Param("WorkingTrend") int WorkingTrend);
+    public List<SysWindbarrier> selectBarrierByControlCabinetId(Long id);
+    public List<SysWindbarrier> selectBarrierByCommunicationCabinetId(Long id);
 }

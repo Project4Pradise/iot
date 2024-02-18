@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.barrier.mapper.SysMqttLogMapper">
+    
+    <resultMap type="SysMqttLog" id="SysMqttLogResult">
+        <result property="id"    column="id"    />
+        <result property="log"    column="log"    />
+        <result property="barrierId" column="barrierId"  />
+    </resultMap>
+
+    <sql id="selectSysMqttLogVo">
+        select id, log,barrierId from sys_mqtt_log
+    </sql>
+
+    <select id="selectSysMqttLogList" parameterType="SysMqttLog" resultMap="SysMqttLogResult">
+        <include refid="selectSysMqttLogVo"/>
+        <where>  
+            <if test="log != null "> and log = #{log}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysMqttLogById" parameterType="Long" resultMap="SysMqttLogResult">
+        <include refid="selectSysMqttLogVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysMqttLog" parameterType="SysMqttLog" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_mqtt_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="log != null">log,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="log != null">#{log},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysMqttLog" parameterType="SysMqttLog">
+        update sys_mqtt_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="log != null">log = #{log},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysMqttLogById" parameterType="Long">
+        delete from sys_mqtt_log where id = #{id}
+    </delete>
+
+    <delete id="deleteSysMqttLogByIds" parameterType="String">
+        delete from sys_mqtt_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

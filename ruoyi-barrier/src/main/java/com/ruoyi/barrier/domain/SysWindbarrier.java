@@ -91,6 +91,9 @@ public class SysWindbarrier extends BaseEntity
     @Excel(name = "降障重试时间阈值")
     private Long FallBarrierRetryTimeThreshold;
 
+    @Excel(name = "当前重试次数")
+    private int RetryCurrentCount;
+
     public void setId(Long id) 
     {
         this.id = id;
@@ -268,6 +271,7 @@ public class SysWindbarrier extends BaseEntity
     public void setWorkingTrend(int workingTrend) {
         WorkingTrend = workingTrend;
     }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -291,8 +295,16 @@ public class SysWindbarrier extends BaseEntity
             .append("FallBarrierRetryTimeThreshold", getFallBarrierRetryTimeThreshold())
                 .append("CurrentCurrent", getCurrentCurrent())
                 .append("WorkingTrend", getWorkingTrend())
+                .append("RetryCurrentCount",getRetryCurrentCount())
             .toString();
     }
 
 
+    public int getRetryCurrentCount() {
+        return RetryCurrentCount;
+    }
+
+    public void setRetryCurrentCount(int retryCurrentCount) {
+        RetryCurrentCount = retryCurrentCount;
+    }
 }

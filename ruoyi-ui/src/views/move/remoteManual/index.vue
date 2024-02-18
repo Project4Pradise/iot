@@ -118,7 +118,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
       <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="运 行高度" align="center" prop="currentHeight" />
+      <el-table-column label="运行高度" align="center" prop="currentHeight" />
       <el-table-column label="分组id" align="center" prop="groupId" />
       <el-table-column label="区域Id" align="center" prop="areaId"  />
       <el-table-column label="通信柜id" align="center" prop="communicationCabinetId" />
@@ -517,7 +517,7 @@ export default {
             this.mqttMsg.qos=1;
             this.mqttMsg.retained=false;
             this.mqttMsg.payload=base64;
-            sendmqtt(this.mqttMsg,"iot/workingState");
+            sendmqtt(this.mqttMsg,"iot/barrier");
 
           }
           this.getList();
@@ -555,7 +555,7 @@ export default {
             this.mqttMsg.qos=1;
             this.mqttMsg.retained=false;
             this.mqttMsg.payload=base64;
-            sendmqtt(this.mqttMsg,"iot/workingState");
+            sendmqtt(this.mqttMsg,"iot/barrier");
 
           }
           this.getList();
@@ -592,7 +592,7 @@ export default {
             this.mqttMsg.qos=1;
             this.mqttMsg.retained=false;
             this.mqttMsg.payload=base64;
-            sendmqtt(this.mqttMsg,"iot/workingState");
+            sendmqtt(this.mqttMsg,"iot/barrier");
 
           }
           this.getList();

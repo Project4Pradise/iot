@@ -51,7 +51,9 @@ public class PushCallback implements MqttCallback {
             barrierControl.updateCurrent();
             barrierControl.FallBarrierCurrentThreshold();
             barrierControl.RaiseBarrierCurrentThreshold();
-
+            barrierControl.sendWokingComplete();
+            barrierControl.isretrying();
+            barrierControl.logInsert();
     }
 
     @Override
@@ -59,7 +61,7 @@ public class PushCallback implements MqttCallback {
         logger.info("deliveryComplete---------" + iMqttDeliveryToken.isComplete());
     }
 
-    //别的Controller层会调用这个方法来  获取  接收到的硬件数据
+    //别的Controller层会调用这个方法来  获取接收到的硬件数据
     public JSONObject receive() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("topic", _topic);

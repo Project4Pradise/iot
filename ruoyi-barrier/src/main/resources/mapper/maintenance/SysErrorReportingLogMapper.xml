@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.barrier.mapper.SysErrorReportingLogMapper">
+    
+    <resultMap type="SysErrorReportingLog" id="SysErrorReportingLogResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="errorId"    column="errorId"    />
+        <result property="cabinetId"    column="cabinetId"    />
+        <result property="barrierId"    column="barrierId"    />
+        <result property="des"    column="des"    />
+        <result property="imgURL"    column="imgURL"    />
+    </resultMap>
+
+    <sql id="selectSysErrorReportingLogVo">
+        select id, name, errorId, cabinetId, barrierId, des, imgURL from sys_error_reporting_log
+    </sql>
+
+    <select id="selectSysErrorReportingLogList" parameterType="SysErrorReportingLog" resultMap="SysErrorReportingLogResult">
+        <include refid="selectSysErrorReportingLogVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="errorId != null "> and errorId = #{errorId}</if>
+            <if test="cabinetId != null "> and cabinetId = #{cabinetId}</if>
+            <if test="barrierId != null "> and barrierId = #{barrierId}</if>
+            <if test="des != null  and des != ''"> and des = #{des}</if>
+            <if test="imgURL != null  and imgURL != ''"> and imgURL = #{imgURL}</if>
+        </where>
+    </select>
+
+    <select id="selectErrorsByCabinetId"  parameterType="Long"  resultMap="SysErrorReportingLogResult">
+        <include refid="selectSysErrorReportingLogVo"/>
+        <where>
+            <if test="cabinetId != null "> and cabinetId = #{cabinetId}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysErrorReportingLogById" parameterType="Long" resultMap="SysErrorReportingLogResult">
+        <include refid="selectSysErrorReportingLogVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysErrorReportingLog" parameterType="SysErrorReportingLog" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_error_reporting_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="errorId != null">errorId,</if>
+            <if test="cabinetId != null">cabinetId,</if>
+            <if test="barrierId != null">barrierId,</if>
+            <if test="des != null">des,</if>
+            <if test="imgURL != null">imgURL,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="errorId != null">#{errorId},</if>
+            <if test="cabinetId != null">#{cabinetId},</if>
+            <if test="barrierId != null">#{barrierId},</if>
+            <if test="des != null">#{des},</if>
+            <if test="imgURL != null">#{imgURL},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysErrorReportingLog" parameterType="SysErrorReportingLog">
+        update sys_error_reporting_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="errorId != null">errorId = #{errorId},</if>
+            <if test="cabinetId != null">cabinetId = #{cabinetId},</if>
+            <if test="barrierId != null">barrierId = #{barrierId},</if>
+            <if test="des != null">des = #{des},</if>
+            <if test="imgURL != null">imgURL = #{imgURL},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysErrorReportingLogById" parameterType="Long">
+        delete from sys_error_reporting_log where id = #{id}
+    </delete>
+
+    <delete id="deleteSysErrorReportingLogByIds" parameterType="String">
+        delete from sys_error_reporting_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

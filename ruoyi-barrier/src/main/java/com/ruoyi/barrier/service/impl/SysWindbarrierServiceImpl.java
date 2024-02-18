@@ -95,4 +95,14 @@ public class SysWindbarrierServiceImpl implements ISysWindbarrierService
 
     @Override
     public int updateBarrierWorkingTrendByIds(Long[] ids,int WorkingTrend){return sysWindbarrierMapper.updateBarrierWorkingTrendByIds(ids,WorkingTrend);}
+
+    @Override
+    public List<SysWindbarrier> selectBarrierByControlCabinet(Long id) {
+        return sysWindbarrierMapper.selectBarrierByControlCabinetId(id);
+    }
+
+    @Override
+    public List<SysWindbarrier> selectBarrierByCommunicationCabinet(Long id) {
+        return sysWindbarrierMapper.selectBarrierByCommunicationCabinetId(id);
+    }
 }

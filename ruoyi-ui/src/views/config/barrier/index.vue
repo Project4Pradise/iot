@@ -488,7 +488,7 @@ export default {
         this.mqttMsg.qos=1;
         this.mqttMsg.retained=false;
         this.mqttMsg.payload=base64;
-        sendmqtt(this.mqttMsg,"iot/state")
+        sendmqtt(this.mqttMsg,"iot/barrier")
         this.getList();
       });
     },
@@ -503,7 +503,7 @@ export default {
         this.mqttMsg.qos=1;
         this.mqttMsg.retained=false;
         this.mqttMsg.payload=base64;
-        sendmqtt(this.mqttMsg,"iot/state")
+        sendmqtt(this.mqttMsg,"iot/barrier")
 
         this.getList();
       });

@@ -8,12 +8,15 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.listener.BarrierInformationChangedEvent;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,13 +31,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/config/barrier")
 @Api("风障接口")
+@Component
 public class SysWindbarrierController extends BaseController
 {
     @Autowired
     private ISysWindbarrierService sysWindbarrierService;
     @Autowired
     private SysWindbarrierMapper sysWindbarrierMapper;
-
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
     /**
      * 查询风障参数列表
      */
@@ -90,7 +95,9 @@ public class SysWindbarrierController extends BaseController
     @Log(title = "风障参数", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody SysWindbarrier sysWindbarrier)
+
     {
+
         return toAjax(sysWindbarrierService.updateSysWindbarrier(sysWindbarrier));
     }
 
@@ -113,6 +120,19 @@ public class SysWindbarrierController extends BaseController
     public AjaxResult updateWorkingTrend(@RequestParam Long[] ids,@RequestParam int workingTrend)
     {
         return success(sysWindbarrierService.updateBarrierWorkingTrendByIds(ids,workingTrend));
+    }
+
+    @PreAuthorize("@ss.hasPermi('config:barrier:query')")
+    @GetMapping(value = "/getByControCabinetId/{id}")
+    public AjaxResult getByControCabinetId(@PathVariable Long id)
+    {
+        return success(sysWindbarrierService.selectBarrierByControlCabinet(id));
+    }
+    @PreAuthorize("@ss.hasPermi('config:barrier:query')")
+    @GetMapping(value = "/getByCommunicationCabinetId/{id}")
+    public AjaxResult getByCommunicationCabinetId(@PathVariable Long id)
+    {
+        return success(sysWindbarrierService.selectBarrierByCommunicationCabinet(id));
     }
 
 }

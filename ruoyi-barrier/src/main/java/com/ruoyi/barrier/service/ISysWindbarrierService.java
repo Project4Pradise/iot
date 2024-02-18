@@ -59,5 +59,8 @@ public interface ISysWindbarrierService
      */
     public int deleteSysWindbarrierById(Long id);
 
-    int updateBarrierWorkingTrendByIds(Long[] ids,int WorkingTrend);
+    public int updateBarrierWorkingTrendByIds(Long[] ids,int WorkingTrend);
+    public List<SysWindbarrier> selectBarrierByControlCabinet(Long id);
+    public List<SysWindbarrier> selectBarrierByCommunicationCabinet(Long id);
+
 }

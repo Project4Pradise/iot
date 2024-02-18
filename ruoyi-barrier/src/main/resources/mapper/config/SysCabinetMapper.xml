@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.barrier.mapper.SysCabinetMapper">
+    
+    <resultMap type="SysCabinet" id="SysCabinetResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectSysCabinetVo">
+        select id, name, type from sys_cabinet
+    </sql>
+
+    <select id="selectSysCabinetList" parameterType="SysCabinet" resultMap="SysCabinetResult">
+        <include refid="selectSysCabinetVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null "> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysCabinetById" parameterType="Long" resultMap="SysCabinetResult">
+        <include refid="selectSysCabinetVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysCabinet" parameterType="SysCabinet" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_cabinet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="type != null">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="type != null">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysCabinet" parameterType="SysCabinet">
+        update sys_cabinet
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysCabinetById" parameterType="Long">
+        delete from sys_cabinet where id = #{id}
+    </delete>
+
+    <delete id="deleteSysCabinetByIds" parameterType="String">
+        delete from sys_cabinet where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
